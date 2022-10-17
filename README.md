@@ -10,6 +10,7 @@ Read (get)
 Alle Angebote
 
 ./api/announcements/angebote
+./api/announcements/angebote?ort=berlin&personenanzahl=2&miete=1000
 
 Read (get)
 Alle Gesuche
@@ -21,3 +22,5 @@ Ein Angebot oder
 Ein Gesuch
 
 ./api/announcements/:id
+
+
