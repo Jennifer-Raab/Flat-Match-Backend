@@ -4,9 +4,20 @@
 API Endpoints
 
 
-Flats
+Annoncen
 
 Read (get)
-All Flats
+Alle Angebote
 
-./api/flats
+./api/announcements/angebote
+
+Read (get)
+Alle Gesuche
+
+./api/announcements/gesuche
+
+Read (get)
+Ein Angebot oder 
+Ein Gesuch
+
+./api/announcements/:id
