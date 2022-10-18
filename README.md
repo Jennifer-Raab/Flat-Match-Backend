@@ -7,14 +7,14 @@
 Read (get)
 Alle Angebote
 
-`./api/announcements/angebote`
+`./api/announcements/angebot`
 
 `./api/announcements/angebote?ort=berlin&personenanzahl=2&miete=1000`
 
 Read (get)
 Alle Gesuche
 
-`./api/announcements/gesuche`
+`./api/announcements/gesuch`
 
 Read (get)
 Ein Angebot oder 
