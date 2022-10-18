@@ -5,7 +5,7 @@ import pool from "../db/db.js";
 
 export const getAllAnnouncements = async (req, res, next) => { // not used by App but for testing purposes in the beginning
     try {
-        const  {rows: announcements}  = await pool.query(`SELECT * FROM announcements`);
+        const {rows: announcements} = await pool.query(`SELECT * FROM announcements`);
         // console.log(pool);
         console.log(announcements);
         res.status(200).json(announcements);
@@ -18,7 +18,7 @@ export const getAllAnnouncements = async (req, res, next) => { // not used by Ap
 export const getAllAnnouncementsByType = async (req, res, next) => {
     try {
         const { announcementType } = req.params;
-        const announcementsByType = await pool.query(`SELECT * FROM announcements WHERE type = '${announcementType}' AND active = true`);
+        const { rows: announcementsByType } = await pool.query(`SELECT * FROM announcements WHERE type = '${announcementType}' AND active = true`);
         console.log(announcementsByType);
         res.status(200).json(announcementsByType);
     } catch (err) {
@@ -30,7 +30,7 @@ export const getAllAnnouncementsByType = async (req, res, next) => {
       const { announcementId } = req.params;
       const {rows: [announcementsById]} = await pool.query(`SELECT * FROM announcements WHERE id = ${announcementId} AND active = true`);
       console.log(announcementsById);
-      res.status(200).json(announcementsById);
+      res.status(200).json(announcementsById.fields);
     } catch (error) {
         next(err);
     }
