@@ -14,7 +14,7 @@ announcementsRouter.route("/").get(getAllAnnouncements);
 announcementsRouter.route("/:announcementType").get(getAllAnnouncementsByType);
 
 // get single flat router
-announcementsRouter.route("/:announcementId").get(getSingleAnnouncement);
+announcementsRouter.route("/single/:announcementId").get(getSingleAnnouncement);
 
 
 export default announcementsRouter;
