@@ -20,6 +20,6 @@ Read (get)
 Ein Angebot oder 
 Ein Gesuch
 
-`./api/announcements/:id`
+`./api/announcements/single/:id`
 
 
