@@ -29,8 +29,8 @@ export const getAllAnnouncementsByType = async (req, res, next) => {
     try {
       const { announcementId } = req.params;
       const {rows: [announcementsById]} = await pool.query(`SELECT * FROM announcements WHERE id = ${announcementId} AND active = true`);
-      console.log(announcementsById);
-      res.status(200).json(announcementsById.fields);
+      console.log("ID", announcementsById);
+      res.status(200).json(announcementsById);
     } catch (error) {
         next(err);
     }
