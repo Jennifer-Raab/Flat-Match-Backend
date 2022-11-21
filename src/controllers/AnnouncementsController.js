@@ -1,5 +1,3 @@
-// import Announcements from "../models/Announcements.js";
-
 import pool from "../db/db.js";
 
 
