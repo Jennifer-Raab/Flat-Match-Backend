@@ -5,6 +5,7 @@ import "dotenv/config";
 import pool from "./src/db/db.js";
 
 import AnnouncementsRouter from "./src/routes/AnnouncementsRouter.js";
+import UsersRouter from "./src/routes/UsersRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/announcements", AnnouncementsRouter);
+app.use("/api/users", UsersRouter);
 
 app.get("/", (req, res) => res.status(200).send("Hallo"));
 
