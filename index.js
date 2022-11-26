@@ -6,6 +6,7 @@ import pool from "./src/db/db.js";
 
 import AnnouncementsRouter from "./src/routes/AnnouncementsRouter.js";
 import UsersRouter from "./src/routes/UsersRouter.js";
+import FavoritesRouter from "./src/routes/FavoritesRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use("/api/announcements", AnnouncementsRouter);
 app.use("/api/users", UsersRouter);
+app.use("/api/favorites", FavoritesRouter);
 
 app.get("/", (req, res) => res.status(200).send("Hallo"));
 
