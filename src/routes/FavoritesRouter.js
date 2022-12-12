@@ -1,12 +1,13 @@
 import { Router } from "express";
 import {
-    InsertFavorite
+    insertFavorite,
+    getFavoriteList
 } from "../controllers/FavoritesController.js";
 import verifyToken from '../middlewares/verifyToken.js';
 
 const favoritesRouter = Router();
 
-
-favoritesRouter.route("/create").post(verifyToken, InsertFavorite);
+favoritesRouter.route("/user/:userId").get(verifyToken, getFavoriteList);
+favoritesRouter.route("/create").post(verifyToken, insertFavorite);
 
 export default favoritesRouter;
