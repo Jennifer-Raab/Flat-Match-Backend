@@ -50,3 +50,18 @@ export const deleteFavorite = async (req, res, next) => {
     next(err);
   }
 };
+export const changeFavoriteText = async (req, res, next) => {
+  const { favoriteId } = req.params;
+  const favoriteData = req.body;
+  console.log("Change", favoriteId);
+  try {
+    const changedFavoriteText = await pool.query(
+      "UPDATE favorites SET text=$1 WHERE id=$2 RETURNING *;",
+      [favoriteData.text, favoriteId]
+    );
+    console.log("changedFavoriteText", changedFavoriteText.rows);
+    res.status(201).json(changedFavoriteText.rows);
+  } catch (err) {
+    next(err);
+  }
+};
