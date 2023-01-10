@@ -35,3 +35,26 @@ export const getSingleUserByToken = async(req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+export const putCurrentAnnouncement = async(req, res) => {
+    const currentAnnouncementData = req.body;
+    console.log("req.body", currentAnnouncementData);
+    try {
+        let changedCurrentAnnouncement;
+        if (currentAnnouncementData.type === "offer") {
+            changedCurrentAnnouncement = await pool.query(
+                "UPDATE users SET active_offer_id=$2 WHERE id=$1 RETURNING *;",
+                [currentAnnouncementData.userId, currentAnnouncementData.announcementId]
+              );
+        } else if (currentAnnouncementData.type === "request") {
+            changedCurrentAnnouncement = await pool.query(
+                "UPDATE users SET active_request_id=$2 WHERE id=$1 RETURNING *;",
+                [currentAnnouncementData.userId, currentAnnouncementData.announcementId]
+              );
+        }
+        console.log("changedCurrentAnnouncement", changedCurrentAnnouncement.rows);
+        res.status(201).json(changedCurrentAnnouncement.rows);
+    } catch (err) {
+        next(err);
+    }
+};
