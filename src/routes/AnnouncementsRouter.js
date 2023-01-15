@@ -5,6 +5,7 @@ import {
   getSingleAnnouncement,
   getAllAnnouncementsByTypeAndUserId,
 } from "../controllers/AnnouncementsController.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
 const announcementsRouter = Router();
 
@@ -20,5 +21,5 @@ announcementsRouter.route("/single/:announcementId").get(getSingleAnnouncement);
 // get all Flats by user Id and Type Router
 announcementsRouter
   .route("/:announcementType/:userId")
-  .get(getAllAnnouncementsByTypeAndUserId);
+  .get(verifyToken, getAllAnnouncementsByTypeAndUserId);
 export default announcementsRouter;

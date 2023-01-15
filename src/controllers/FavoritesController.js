@@ -6,9 +6,10 @@ export const insertFavorite = async (req, res, next) => {
   try {
     console.log("Req Body Test", req.body);
     const createdFavorite = await pool.query(
-      "INSERT INTO favorites (user_id, announcement_id, type, text) VALUES ($1, $2, $3, $4) RETURNING *",
+      "INSERT INTO favorites (user_id, active_announcement_id, announcement_id, type, text) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [
         favoriteData.user_id,
+        favoriteData.active_announcement_id,
         favoriteData.announcement_id,
         favoriteData.type,
         favoriteData.text,
@@ -61,6 +62,64 @@ export const changeFavoriteText = async (req, res, next) => {
     );
     console.log("changedFavoriteText", changedFavoriteText.rows);
     res.status(201).json(changedFavoriteText.rows);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+
+export const getMatchesList = async (req, res, next) => {
+  // not used by App but for testing purposes in the beginning
+  // console.log("getMatchesList!!", req.params);
+  try {
+    const { rows: userMatches } = await pool.query(
+      `SELECT 
+      *
+  FROM 
+      favorites AS tab1
+  WHERE user_id = $1 AND
+      EXISTS( SELECT 
+                  1 
+              FROM 
+                  favorites AS tab2
+              WHERE 
+                  tab2.announcement_id = tab1.active_announcement_id)`,
+      [req.params.userId]
+    );
+    // console.log("userMatches", userMatches);
+    
+    const announcementIds = [];
+    const returnResult = [];
+    let firstAnnouncement, secondAnnouncement, offerAnnouncement, requestAnnouncement;
+    userMatches.forEach(userMatch => announcementIds.push(userMatch.announcement_id, userMatch.active_announcement_id));
+    // console.log("announcementIds", announcementIds);
+
+    const { rows: matchAnnouncements } = await pool.query(
+      `SELECT * FROM announcements WHERE id IN (${announcementIds.toString()})`
+    );
+    console.log("matchAnnouncements", matchAnnouncements);
+    userMatches.forEach(userMatch => {
+      firstAnnouncement = matchAnnouncements.find(matchAnnouncement => matchAnnouncement.id === userMatch.announcement_id);
+      secondAnnouncement = matchAnnouncements.find(matchAnnouncement => matchAnnouncement.id === userMatch.active_announcement_id);
+      offerAnnouncement = (firstAnnouncement.type === "angebot") ? firstAnnouncement : secondAnnouncement;
+      requestAnnouncement = (firstAnnouncement.type === "gesuch") ? firstAnnouncement : secondAnnouncement;
+      returnResult.push(
+        {
+          offer_id: offerAnnouncement.id,
+          offer_image: offerAnnouncement.images,
+          offer_title: offerAnnouncement.title,
+          offer_creator_id: offerAnnouncement.creator_id,
+          request_id: requestAnnouncement.id,
+          request_image: requestAnnouncement.images,
+          request_title: requestAnnouncement.title,
+          request_creator_id: requestAnnouncement.creator_id
+        }
+      );
+    });
+    console.log("returnResult", returnResult);
+    res.status(200).json(returnResult);
+
   } catch (err) {
     next(err);
   }

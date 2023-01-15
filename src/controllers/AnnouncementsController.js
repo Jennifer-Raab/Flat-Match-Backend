@@ -62,7 +62,7 @@ export const getAllAnnouncementsByTypeAndUserId = async (req, res, next) => {
       `SELECT * FROM announcements WHERE type = $1 AND active = true AND creator_id=$2`,
       [announcementType, userId]
     );
-    console.log("announcementsByTypeAndUserId", announcementType, announcementsByTypeAndUserId);
+    // console.log("announcementsByTypeAndUserId", announcementType, announcementsByTypeAndUserId);
     res.status(200).json(announcementsByTypeAndUserId);
   } catch (err) {
     next(err);
