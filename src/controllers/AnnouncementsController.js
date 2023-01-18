@@ -69,6 +69,23 @@ export const getAllAnnouncementsByTypeAndUserId = async (req, res, next) => {
   }
 };
 
+export const getLikedAnnouncementsByTypeAndUserId = async (req, res, next) => {
+  try {
+    const { announcementType, userId } = req.params;
+    const { rows: likedAnnouncementsByTypeAndUserId } = await pool.query(
+      `SELECT * FROM favorites, announcements WHERE favorites.active_announcement_id = announcements.id AND announcements.type = $1 AND favorites.announcement_creator_id = $2`,
+      [announcementType, userId]
+    );
+    console.log(
+      "likedAnnouncementsByTypeAndUserId",
+      likedAnnouncementsByTypeAndUserId
+    );
+    res.status(200).json(likedAnnouncementsByTypeAndUserId);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getSingleAnnouncement = async (req, res, next) => {
   try {
     const {
